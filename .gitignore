@@ -1,0 +1,9 @@
+# CMake build output
+build/
+
+# Binaries compiled by hand with clang
+/hashtable
+/hashtable_linked_list
+
+# macOS
+.DS_Store
