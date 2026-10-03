@@ -1,10 +1,9 @@
 #include <stdio.h>
 #include <string.h>
-#include <stdbool.h>
 #include <stdint.h>
 
-#define MAX_NAME_LENGTH 256
-#define TABLE_SIZE 10
+constexpr int MAX_NAME_LENGTH = 256;
+constexpr int TABLE_SIZE = 10;
 
 typedef struct {
   int id;
@@ -29,14 +28,14 @@ unsigned int hash(char *name) {
 
 bool init_hash_table() {
   for (int i = 0; i < TABLE_SIZE; i++) {
-    hash_table[i] = NULL;
+    hash_table[i] = nullptr;
   }
   return true;
 }
 
 void print_table() {
   for (int i = 0; i < TABLE_SIZE; i++) {
-    if (hash_table[i] == NULL) {
+    if (hash_table[i] == nullptr) {
       printf("\t%i\t---\n", i);
     } else if (hash_table[i] == DELETED_NODE) {
       printf("\t%i\t<deleted>\n", i);
@@ -47,11 +46,11 @@ void print_table() {
 }
 
 bool insert_into_hash_table(Person *person) {
-  if (person == NULL) return false;
+  if (person == nullptr) return false;
   int index = hash(person->name);
   for (int i = 0; i < TABLE_SIZE; i++) {
     int try = (i + index) % TABLE_SIZE;
-    if (hash_table[try] == NULL || hash_table[try] == DELETED_NODE) {
+    if (hash_table[try] == nullptr || hash_table[try] == DELETED_NODE) {
       hash_table[try] = person;
       printf("Inserted %s at index %i\n", person->name, try);
       return true;
@@ -66,7 +65,7 @@ Person *hash_table_delete(char *name) {
   int index = hash(name);
   for (int i = 0; i < TABLE_SIZE; i++) {
     int try = (i + index) % TABLE_SIZE;
-    if (hash_table[try] == NULL) return NULL;
+    if (hash_table[try] == nullptr) return nullptr;
     if (hash_table[try] == DELETED_NODE) continue;
     if (strncmp(hash_table[try]->name, name, MAX_NAME_LENGTH) == 0) {
       Person *tmp = hash_table[try];
@@ -74,24 +73,24 @@ Person *hash_table_delete(char *name) {
       return tmp;
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 Person *hash_table_lookup(char *name) {
   int index = hash(name);
   for (int i = 0; i < TABLE_SIZE; i++) {
     int try = (i + index) % TABLE_SIZE;
-    if (hash_table[try] == NULL) return false;
+    if (hash_table[try] == nullptr) return nullptr;
     if (hash_table[try] == DELETED_NODE) continue;
     if (strncmp(hash_table[try]->name, name, MAX_NAME_LENGTH) == 0) {
       return hash_table[try];
     }
   }
-  return NULL;
+  return nullptr;
 }
 
 void print_lookup_result(Person *person) {
-  if (person == NULL) {
+  if (person == nullptr) {
     printf("Not found\n");
   } else {
     printf("Found %s\n", person->name);

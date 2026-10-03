@@ -1,9 +1,8 @@
 #include <stdio.h>
 #include <string.h>
-#include <stdbool.h>
 
-#define MAX_NAME_LENGTH 256
-#define TABLE_SIZE 10
+constexpr int MAX_NAME_LENGTH = 256;
+constexpr int TABLE_SIZE = 10;
 
 typedef struct Person {
   int id;
@@ -27,19 +26,19 @@ unsigned int hash(char *name) {
 
 bool init_hash_table() {
   for (int i = 0; i < TABLE_SIZE; i++) {
-    hash_table[i] = NULL;
+    hash_table[i] = nullptr;
   }
   return true;
 }
 
 void print_table() {
   for (int i = 0; i < TABLE_SIZE; i++) {
-    if (hash_table[i] == NULL) {
+    if (hash_table[i] == nullptr) {
       printf("\t%i\t---\n", i);
     } else {
       printf("\t%i\t", i);
       Person *tmp = hash_table[i];
-      while (tmp != NULL) {
+      while (tmp != nullptr) {
         printf("%s -> ", tmp->name);
         tmp = tmp->next;
       }
@@ -49,7 +48,7 @@ void print_table() {
 }
 
 bool insert_into_hash_table(Person *person) {
-  if (person == NULL) return false;
+  if (person == nullptr) return false;
   int index = hash(person->name);
   person->next = hash_table[index];
   hash_table[index] = person;
@@ -60,7 +59,7 @@ bool insert_into_hash_table(Person *person) {
 Person *hash_table_lookup(char *name) {
   int index = hash(name);
   Person *tmp = hash_table[index];
-  while (tmp != NULL && strncmp(tmp->name, name, MAX_NAME_LENGTH) != 0) {
+  while (tmp != nullptr && strncmp(tmp->name, name, MAX_NAME_LENGTH) != 0) {
     tmp = tmp->next;
   }
   return tmp;
@@ -69,25 +68,25 @@ Person *hash_table_lookup(char *name) {
 Person *hash_table_delete(char *name) {
   int index = hash(name);
   Person *tmp = hash_table[index];
-  Person *prev = NULL;
-  while (tmp != NULL && strncmp(tmp->name, name, MAX_NAME_LENGTH) != 0) {
+  Person *prev = nullptr;
+  while (tmp != nullptr && strncmp(tmp->name, name, MAX_NAME_LENGTH) != 0) {
     prev = tmp;
     tmp = tmp->next;
   }
-  if (tmp == NULL) return NULL;
-  if (prev == NULL) {
+  if (tmp == nullptr) return nullptr;
+  if (prev == nullptr) {
     // deleting the head of the list
     hash_table[index] = tmp->next;
   } else {
     // deleting from the middle or the end
     prev->next = tmp->next;
   }
-  tmp->next = NULL;
+  tmp->next = nullptr;
   return tmp;
 }
 
 void print_lookup_result(Person *person) {
-  if (person == NULL) {
+  if (person == nullptr) {
     printf("Not found\n");
   } else {
     printf("Found %s\n", person->name);
